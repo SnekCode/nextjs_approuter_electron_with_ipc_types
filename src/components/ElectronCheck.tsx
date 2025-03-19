@@ -27,6 +27,7 @@ export function ElectronCheck(): JSX.Element {
       <p style={{ fontSize: "1.5em", color: "#333" }}>Is Electron - {isElectron ? "Yes" : "No"}</p>
       <br />
       {isElectron && (
+        <>
         <button
           style={{
             padding: "10px 20px",
@@ -42,11 +43,32 @@ export function ElectronCheck(): JSX.Element {
           onMouseOver={(e) => (e.currentTarget.style.backgroundColor = "#005fa3")}
           onMouseOut={(e) => (e.currentTarget.style.backgroundColor = "#007acc")}
           onClick={() => {
-            window.electron.ipcRenderer.send("ping");
+            window.electron.ipcRenderer.send("object", {value:1, key: "ping"});
+          }}
+          >
+          On Ping Electron
+        </button>
+        <button
+          style={{
+            padding: "10px 20px",
+            margin: "10px",
+            backgroundColor: "#007acc",
+            color: "white",
+            border: "none",
+            borderRadius: "5px",
+            cursor: "pointer",
+            fontSize: "1em",
+            transition: "background-color 0.3s",
+          }}
+          onMouseOver={(e) => (e.currentTarget.style.backgroundColor = "#005fa3")}
+          onMouseOut={(e) => (e.currentTarget.style.backgroundColor = "#007acc")}
+          onClick={() => {
+            console.log(window.electron.ipcRenderer.invoke("object", {value:1, key: "ping"}))
           }}
         >
-          Ping Electron
+          Handle Ping Electron
         </button>
+        </>
       )}
     </div>
   );

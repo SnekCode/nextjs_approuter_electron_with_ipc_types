@@ -3,6 +3,7 @@ import { app, BrowserWindow, ipcMain } from "electron";
 import { getPort } from "get-port-please";
 import { startServer } from "next/dist/server/lib/start-server";
 import { join } from "path";
+import {handleIpcMain, onIpcMain} from '../ipc';
 
 const createWindow = () => {
   const mainWindow = new BrowserWindow({
@@ -60,7 +61,15 @@ const startNextJSServer = async () => {
 app.whenReady().then(() => {
   createWindow();
 
-  ipcMain.on("ping", () => console.log("pong"));
+  handleIpcMain("object", (event, args) => {
+    console.log(args)
+    return "pong";
+  })
+
+  onIpcMain("object", (event, {key, value}) => {
+    console.log(value)
+  })
+
   app.on("activate", () => {
     if (BrowserWindow.getAllWindows().length === 0) createWindow();
   });
